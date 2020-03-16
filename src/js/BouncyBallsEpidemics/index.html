@@ -5,16 +5,28 @@
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
   <script language="javascript" type="text/javascript" src="BouncyBallsEpidemics.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
+
 </head>
 
 <body>
-  <div id='debug'></div>
   <h1>Ball epidemics</h1>
 
   <ul id='parameters'>
-  <li>Social distance: <input id="social-distance-slider" type="range" min="0" max="100" value="10"/> <span id="social-distance-value"></span></li>
-  <li>Mortality: <input id="mortality-slider" type="range" min="0" max="100" value="10"/> <span id="mortality-value"></span></li>
-  <li>Contagiousness time: <input id="mortality-slider" type="range" min="0" max="300" value="100"/> <span id="mortality-value"></span></li>
+  <li>Social distance:
+    <input id="social-distance-slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/>
+    <span id="social-distance-value">10</span>%</li>
+  <li>Mortality:
+      <input id="mortality-slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/>
+      <span id="mortality-value">3</span>%</li>
+  <li>Sick time:
+    <input id="sick-time-slider" type="range" min="0" max="10" step="0.1" value="5"
+     oninput="document.getElementById('sick-time-value').innerHTML=this.value;"
+     onchange="document.getElementById('sick-time-value').innerHTML=this.value;"/>
+    <span id="sick-time-value">5</span> seconds</li>
   </ul>
 
   <input id='restart-button' type='submit' value='Go!'/>
@@ -22,6 +34,16 @@
   <div id="ball-simulation"></div>
 
   <div id="ball-graph"></div>
+
+  <ul>
+    <li>Healthy: <span id="healthy-stat"></span>%</li>
+    <li>Immune: <span id="immune-stat"></span>%</li>
+    <li>Sick: <span id="sick-stat"></span>%</li>
+    <li>Dead: <span id="dead-stat"></span>%</li>
+    <li>Time: <span id="current-time"></span> seconds</li>
+  </ul>
+
+  <div id='debug'><div>
 
 </body>
 </html>
