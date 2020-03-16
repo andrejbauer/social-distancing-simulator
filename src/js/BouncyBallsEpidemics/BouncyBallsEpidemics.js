@@ -3,19 +3,19 @@
 
    Copyright (c) 2020 Andrej Bauer. This work is licenced under the MIT licence.
 
-   **Disclaimer:** this simulation illustrates the qualitative aspects of epidemics only.
-   It is *not* a validated model of actual epidemics.
+   DISCLAIMER: this simulation illustrates the qualitative mathematical aspects of epidemics for illustration purposes only.
+   It is *not* a validated model of actual epidemics and no conclusions should be drawn from it regarding health policy.
 */
 
 /* Colors of sick, healthy, immune and dead balls. */
 let SICK_COLOR = "#FF0000";
 let HEALTHY_COLOR = "#FFFFFF";
 let IMMUNE_COLOR = "#FFFFA0";
-let DEAD_COLOR = "#404040";
+let DEAD_COLOR = "#808080";
 
 /* Display area */
 let totalWidth = 320; /* total width */
-let totalHeight = 320; /* total height */
+let totalHeight = 480; /* total height */
 
 /* Division of display area into parts */
 let gapHeight = totalHeight >> 4; /* the gap for numbers display */
@@ -24,21 +24,30 @@ let barHeight = gapHeight * 3; /* the height of the histogram */
 let arenaWidth = totalHeight;
 let arenaHeight = totalHeight - gapHeight - barHeight ;
 
+/* GUI elements */
+let socialDistanceSlider = undefined ;
+let socialDistanceValue = undefined ;
+let mortalitySlider = undefined ;
+let mortalityValue = undefined ;
+let sickTimeSlider = undefined ;
+let sickTimeValue = undefined ;
+let restartButton = undefined ;
+
 /* ball status */
 let DEAD = -2;
 let HEALTHY = -1;
 let IMMUNE = 0;
 /* positive values are time-to-still-be-sick */
 
+
 /*********** BALL ************/
 
-function Ball(x, y, direction, stationary, id, model) {
+function Ball(x, y, direction, id, model) {
     this.x = x;
     this.y = y;
-    this.diameter = (arenaWidth + arenaHeight) / 150 ;
+    this.diameter = (arenaWidth + arenaHeight) / 200 ;
     this.direction = direction;
-    this.velocity = 2;
-    this.stationary = stationary;
+    this.stationary = false;
     this.id = id;
     this.model = model;
     this.status = HEALTHY;
@@ -62,7 +71,7 @@ function Ball(x, y, direction, stationary, id, model) {
         else { return SICK_COLOR; }
     }
 
-    this.move = function() {
+    this.step = function() {
         if (this.isSick()) {
             this.status--;
             if (this.status == 0) {
@@ -70,8 +79,8 @@ function Ball(x, y, direction, stationary, id, model) {
             }
         }
         if (!this.stationary && !this.isDead()) {
-            this.x = (this.x + this.velocity * cos(this.direction) + arenaWidth) % arenaWidth ;
-            this.y = (this.y + this.velocity * sin(this.direction) + arenaHeight) % arenaHeight ;
+            this.x = (this.x + this.model.velocity() * cos(this.direction) + arenaWidth) % arenaWidth ;
+            this.y = (this.y + this.model.velocity() * sin(this.direction) + arenaHeight) % arenaHeight ;
         }
     }
 
@@ -93,6 +102,7 @@ function Ball(x, y, direction, stationary, id, model) {
         }
     }
 
+
     this.display = function () {
         fill(this.statusColor());
         ellipse(this.x, this.y, this.diameter, this.diameter);
@@ -103,31 +113,39 @@ function Ball(x, y, direction, stationary, id, model) {
 /*********** MODEL ************/
 
 function Model(socialDistance, mortality, sickTime) {
-    this.socialDistance = socialDistance; /* proportion of stationary balls */
-    this.sickTime = sickTime; /* how long a ball is sick */
-    this.maxTime = 30 * sickTime; /* maximum time of simulation */
-    this.mortality = mortality; /* how likely an infected ball dies */
-    this.population = 1000; /* initial population */
+    this.initialize = function(socialDistance, mortality, sickTime) {
+        this.socialDistance = socialDistance; /* proportion of stationary balls */
+        this.sickTime = sickTime; /* how long a ball is sick */
+        this.maxTime = 100 * sickTime; /* maximum time of simulation */
+        this.mortality = mortality; /* how likely an infected ball dies */
+        this.population = 1000; /* initial population */
 
-    /* Initialize the balls */
-    this.balls = Array(this.population);
-    for (let i = 0; i < this.population; i++) {
-        this.balls[i] = new Ball(random(arenaWidth), random(arenaHeight), random(0, 2 * PI),
-                                 (i <= this.population * this.socialDistance), i, this);
+        /* statistics */
+        this.currentTime = 0;
+        this.healthyStat = [this.population-1];
+        this.immuneStat = [0];
+        this.sickStat = [1];
+        this.deadStat = [0];
+
+        /* Initialize the balls */
+        this.balls = [];
+        for (let i = 0; i < this.population; i++) {
+            this.balls.push(new Ball(random(arenaWidth), random(arenaHeight), random(0, 2 * PI), i, this));
+        }
+        /* Make one of them sick */
+        this.balls[0].contactWith(this.sickTime);
+
     }
-    /* Make one of them sick */
-    this.balls[this.population-1].status = this.sickTime;
-
-    /* statistics */
-    this.currentTime = 0;
-    this.healthyStat = new Array(this.maxTime);
-    this.immuneStat = new Array(this.maxTime);
-    this.sickStat = new Array(this.maxTime);
-    this.deadStat = new Array(this.maxTime);
 
     this.isFinished = function () {
-        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 || this.sickStat[this.currentTime-1] == 0);
+        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 || this.sickStat[this.sickStat.length-1] == 0);
     };
+
+    /* The velocity of balls, depending on social distance. */
+   this.velocity = function () {
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 100 ;
+       return velocity;
+   }
 
     /* Perform one step of simulation */
     this.step = function step() {
@@ -137,22 +155,22 @@ function Model(socialDistance, mortality, sickTime) {
         let si = 0;
         let de = 0;
         let he = 0;
-        for (let i = 0; i < this.population; i++) {
-            if (this.balls[i].isImmune()) { im++; }
-            else if (this.balls[i].isDead()) { de++; }
-            else if (this.balls[i].isSick()) { si++; }
+        for (let b of this.balls) {
+            if (b.isImmune()) { im++; }
+            else if (b.isDead()) { de++; }
+            else if (b.isSick()) { si++; }
             else { he++; }
         }
-        this.immuneStat[this.currentTime] = im;
-        this.sickStat[this.currentTime] = si;
-        this.deadStat[this.currentTime] = de;
-        this.healthyStat[this.currentTime] = he;
+        this.immuneStat.push(im);
+        this.sickStat.push(si);
+        this.deadStat.push(de);
+        this.healthyStat.push(he);
         this.currentTime++;
 
         /* update the balls */
         for (let ball of this.balls) {
             ball.collide();
-            ball.move();
+            ball.step();
         }
     }
 
@@ -167,16 +185,16 @@ function Model(socialDistance, mortality, sickTime) {
         let indentText = arenaWidth / 8 ;
         textSize(gapHeight * 0.6);
         fill(HEALTHY_COLOR);
-        text(str(round(100 * this.healthyStat[this.currentTime-1]/this.population)) + "%",
+        text(str(round(100 * this.healthyStat[this.healthyStat.length-1]/this.population)) + "%",
              gapHeight, arenaHeight + 0.7 * gapHeight);
         fill(SICK_COLOR);
-        text(str(round(100 * this.sickStat[this.currentTime-1]/this.population)) + "%",
+        text(str(round(100 * this.sickStat[this.sickStat.length-1]/this.population)) + "%",
              gapHeight + indentText, arenaHeight + 0.7 * gapHeight);
         fill(IMMUNE_COLOR);
-        text(str(round(100 * this.immuneStat[this.currentTime-1]/this.population)) + "%",
+        text(str(round(100 * this.immuneStat[this.immuneStat.length-1]/this.population)) + "%",
              gapHeight + 2*indentText, arenaHeight + 0.7 * gapHeight);
         fill(DEAD_COLOR);
-        text(str(round(100 * this.deadStat[this.currentTime-1]/this.population)) + "%",
+        text(str(round(100 * this.deadStat[this.deadStat.length-1]/this.population)) + "%",
              gapHeight + 3*indentText, arenaHeight + 0.7 * gapHeight);
 
         /* the bars */
@@ -189,17 +207,17 @@ function Model(socialDistance, mortality, sickTime) {
         beginShape();
         vertex(x1, y1);
         vertex(x0, y1);
-        for (let t = 0; t < this.currentTime; t++) {
+        for (let t = 0; t < this.deadStat.length; t++) {
             vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
         }
         endShape(CLOSE);
         /* sick balls */
         fill(SICK_COLOR);
         beginShape();
-        for (let t = 0; t < this.currentTime; t++) {
+        for (let t = 0; t < this.deadStat.length; t++) {
             vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
         }
-        for (let t = this.currentTime-1; t >= 0; t--) {
+        for (let t = this.sickStat.length; t >= 0; t--) {
             vertex(x0 + t* dx, y1 - (this.sickStat[t] + this.deadStat[t]) * dy);
         }
         endShape(CLOSE);
@@ -208,24 +226,52 @@ function Model(socialDistance, mortality, sickTime) {
         beginShape();
         vertex(x1, y0);
         vertex(x0, y0);
-        for (let t = 0; t < this.currentTime; t++) {
+        for (let t = 0; t < this.immuneStat.length; t++) {
             vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
         endShape(CLOSE);
-    }
+    };
 
+    this.initialize(socialDistance, mortality, sickTime);
 }
 
 /********* MAIN SETUP **********/
 let model;
 
+function getSocialDistance() {
+    return socialDistanceSlider.value() / 100.0 ;
+}
+
+function restartModel() {
+    model.initialize(getSocialDistance(), 0.1, 50);
+}
+
 function setup() {
-    createCanvas(totalWidth, totalHeight);
-    model = new Model(0.95, 0.1, 100);
+    socialDistanceSlider = select('#social-distance-slider');
+    socialDistanceValue = select('#social-distance-value');
+    restartButton = select('#restart-button');
+
+    let cnv = createCanvas(totalWidth, totalHeight);
+    cnv.parent('ball-epidemics');
+
+    model = new Model(0.5, 0.1, 50);
+
+    frameRate(30);
+    ellipseMode(CENTER);
+
+    restartButton.mousePressed(restartModel);
 }
 
 function draw() {
-    if (!model.isFinished()) {
+    if (model.isFinished()) {
+        noLoop();
+    } else {
+        let sd = socialDistanceSlider.value() / 100.0;
+        if (model.socialDistance != sd) {
+            socialDistanceValue.html(str(sd));
+            model.socialDistance = sd;
+        }
+
         background("#000000");
         /* arena */
         noStroke();

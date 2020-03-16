@@ -1,8 +1,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
   <script language="javascript" type="text/javascript" src="BouncyBallsEpidemics.js"></script>
@@ -14,5 +12,19 @@
 </head>
 
 <body>
+  <h1>Ball epidemics</h1>
+
+  <ul id='parameters'>
+  <li>Social distance: <input id="social-distance-slider" type="range" min="0" max="100" value="10"/> <span id="social-distance-value"></span></li>
+  <li>Mortality: <input id="mortality-slider" type="range" min="0" max="100" value="10"/> <span id="mortality-value"></span></li>
+  <li>Contagiousness time: <input id="mortality-slider" type="range" min="0" max="300" value="100"/> <span id="mortality-value"></span></li>
+  </ul>
+
+  <input id='restart-button' type='submit' value='Go!'/>
+
+  <div id="ball-epidemics"></div>
+
+  <p id="debug"></p>
+
 </body>
 </html>
