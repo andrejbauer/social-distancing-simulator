@@ -13,18 +13,17 @@ let HEALTHY_COLOR = "#FFFFFF";
 let IMMUNE_COLOR = "#FFFFA0";
 let DEAD_COLOR = "#808080";
 
-/* Display area */
-let totalWidth = 320; /* total width */
-let totalHeight = 480; /* total height */
-
-/* Division of display area into parts */
-let gapHeight = totalHeight >> 4; /* the gap for numbers display */
-let barHeight = gapHeight * 3; /* the height of the histogram */
 /* The area where the balls are animated */
-let arenaWidth = totalHeight;
-let arenaHeight = totalHeight - gapHeight - barHeight ;
+var arena; /* initialized below */
+let arenaWidth = 640;
+let arenaHeight = 320;
 
-/* GUI elements */
+/* The area where the graph is drawn */
+var graph; /* initalized below */
+let graphWidth = 640;  /* the width of the statistics bar */
+let graphHeight = 120; /* the height of statistics bar */
+
+/* Other GUI elements */
 let socialDistanceSlider = undefined ;
 let socialDistanceValue = undefined ;
 let mortalitySlider = undefined ;
@@ -39,6 +38,9 @@ let HEALTHY = -1;
 let IMMUNE = 0;
 /* positive values are time-to-still-be-sick */
 
+function debug(msg) {
+    document.write(msg);
+}
 
 /*********** BALL ************/
 
@@ -75,12 +77,12 @@ function Ball(x, y, direction, id, model) {
         if (this.isSick()) {
             this.status--;
             if (this.status == 0) {
-                this.status = (this.model.mortality < random(0.0, 1.0)) ? IMMUNE : DEAD;
+                this.status = (this.model.mortality < Math.random()) ? IMMUNE : DEAD;
             }
         }
         if (!this.stationary && !this.isDead()) {
-            this.x = (this.x + this.model.velocity() * cos(this.direction) + arenaWidth) % arenaWidth ;
-            this.y = (this.y + this.model.velocity() * sin(this.direction) + arenaHeight) % arenaHeight ;
+            this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
+            this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;
         }
     }
 
@@ -96,16 +98,15 @@ function Ball(x, y, direction, id, model) {
                 let s = this.status;
                 this.contactWith(others[i].status);
                 others[i].contactWith(s);
-                this.direction = random(0, 2 * PI);
-                others[i].direction = random(0, 2 * PI);
+                this.direction = Math.random() * 2 * Math.PI;
+                others[i].direction = Math.random() * 2 * Math.PI;
             }
         }
     }
 
-
     this.display = function () {
-        fill(this.statusColor());
-        ellipse(this.x, this.y, this.diameter, this.diameter);
+        arena.fill(this.statusColor());
+        arena.ellipse(this.x, this.y, this.diameter, this.diameter);
     }
 }
 
@@ -127,10 +128,10 @@ function Model(socialDistance, mortality, sickTime) {
         this.sickStat = [1];
         this.deadStat = [0];
 
-        /* Initialize the balls */
+        /* initialize the balls */
         this.balls = [];
         for (let i = 0; i < this.population; i++) {
-            this.balls.push(new Ball(random(arenaWidth), random(arenaHeight), random(0, 2 * PI), i, this));
+            this.balls.push(new Ball(Math.random() * arenaWidth, Math.random() * arenaHeight, Math.random() * 2 * Math.PI, i, this));
         }
         /* Make one of them sick */
         this.balls[0].contactWith(this.sickTime);
@@ -176,114 +177,129 @@ function Model(socialDistance, mortality, sickTime) {
 
     this.displayStats = function() {
         let x0 = 0.0 ;
-        let x1 = min(this.currentTime, arenaWidth);
+        let x1 = Math.min(this.currentTime, graphWidth);
         let dx = (x1 - x0) / this.currentTime;
-        let y0 = arenaHeight + gapHeight;
-        let y1 = y0 + barHeight;
+        let y0 = 0;
+        let y1 = y0 + graphHeight;
         let dy = (y1 - y0) / this.population;
+
         /* numbers */
-        let indentText = arenaWidth / 8 ;
-        textSize(gapHeight * 0.6);
-        fill(HEALTHY_COLOR);
-        text(str(round(100 * this.healthyStat[this.healthyStat.length-1]/this.population)) + "%",
-             gapHeight, arenaHeight + 0.7 * gapHeight);
-        fill(SICK_COLOR);
-        text(str(round(100 * this.sickStat[this.sickStat.length-1]/this.population)) + "%",
-             gapHeight + indentText, arenaHeight + 0.7 * gapHeight);
-        fill(IMMUNE_COLOR);
-        text(str(round(100 * this.immuneStat[this.immuneStat.length-1]/this.population)) + "%",
-             gapHeight + 2*indentText, arenaHeight + 0.7 * gapHeight);
-        fill(DEAD_COLOR);
-        text(str(round(100 * this.deadStat[this.deadStat.length-1]/this.population)) + "%",
-             gapHeight + 3*indentText, arenaHeight + 0.7 * gapHeight);
+        // let indentText = graphWidth / 8 ;
+        // textSize(gapHeight * 0.6);
+        // fill(HEALTHY_COLOR);
+        // text(str(round(100 * this.healthyStat[this.healthyStat.length-1]/this.population)) + "%",
+        //      gapHeight, arenaHeight + 0.7 * gapHeight);
+        // fill(SICK_COLOR);
+        // text(str(round(100 * this.sickStat[this.sickStat.length-1]/this.population)) + "%",
+        //      gapHeight + indentText, arenaHeight + 0.7 * gapHeight);
+        // fill(IMMUNE_COLOR);
+        // text(str(round(100 * this.immuneStat[this.immuneStat.length-1]/this.population)) + "%",
+        //      gapHeight + 2*indentText, arenaHeight + 0.7 * gapHeight);
+        // fill(DEAD_COLOR);
+        // text(str(round(100 * this.deadStat[this.deadStat.length-1]/this.population)) + "%",
+        //      gapHeight + 3*indentText, arenaHeight + 0.7 * gapHeight);
 
         /* the bars */
-        noStroke();
+        graph.background("#FFFFFF");
+        graph.noStroke();
         /* healthy balls */
-        fill(HEALTHY_COLOR);
-        rect(x0, y0, x1 - x0, barHeight);
+        graph.fill(HEALTHY_COLOR);
+        graph.rect(x0, y0, x1 - x0, graphHeight);
         /* dead balls */
-        fill(DEAD_COLOR);
-        beginShape();
-        vertex(x1, y1);
-        vertex(x0, y1);
+        graph.fill(DEAD_COLOR);
+        graph.beginShape();
+        graph.vertex(x1, y1);
+        graph.vertex(x0, y1);
         for (let t = 0; t < this.deadStat.length; t++) {
-            vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
+            graph.vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
         }
-        endShape(CLOSE);
+        graph.endShape(graph.CLOSE);
         /* sick balls */
-        fill(SICK_COLOR);
-        beginShape();
+        graph.fill(SICK_COLOR);
+        graph.beginShape();
         for (let t = 0; t < this.deadStat.length; t++) {
-            vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
+            graph.vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
         }
         for (let t = this.sickStat.length; t >= 0; t--) {
-            vertex(x0 + t* dx, y1 - (this.sickStat[t] + this.deadStat[t]) * dy);
+            graph.vertex(x0 + t* dx, y1 - (this.sickStat[t] + this.deadStat[t]) * dy);
         }
-        endShape(CLOSE);
+        graph.endShape(graph.CLOSE);
         /* immune balls */
-        fill(IMMUNE_COLOR);
-        beginShape();
-        vertex(x1, y0);
-        vertex(x0, y0);
+        graph.fill(IMMUNE_COLOR);
+        graph.beginShape();
+        graph.vertex(x1, y0);
+        graph.vertex(x0, y0);
         for (let t = 0; t < this.immuneStat.length; t++) {
-            vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
+            graph.vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
-        endShape(CLOSE);
+        graph.endShape(graph.CLOSE);
     };
 
     this.initialize(socialDistance, mortality, sickTime);
 }
 
 /********* MAIN SETUP **********/
-let model;
+let model = new Model(0.5, 0.1, 50);
 
 function getSocialDistance() {
     return socialDistanceSlider.value() / 100.0 ;
 }
 
 function restartModel() {
+    arena.loop();
     model.initialize(getSocialDistance(), 0.1, 50);
 }
 
-function setup() {
-    socialDistanceSlider = select('#social-distance-slider');
-    socialDistanceValue = select('#social-distance-value');
-    restartButton = select('#restart-button');
+debug("Little shit called it!");
+graph = new p5(
+    (graph) => {
+        graph.setup = () => {
+            graph.createCanvas(graphWidth, graphHeight);
+            graph.noLoop();
+        };
 
-    let cnv = createCanvas(totalWidth, totalHeight);
-    cnv.parent('ball-epidemics');
+        graph.draw = () => {
+            model.displayStats();
+        };
+    },
+    document.getElementById('#ball-graph'));
 
-    model = new Model(0.5, 0.1, 50);
+arena = new p5(
+    (arena) => {
+        arena.setup = () => {
+            arena.createCanvas(arenaWidth, arenaHeight);
+            socialDistanceSlider = arena.select('#social-distance-slider');
+            socialDistanceValue = arena.select('#social-distance-value');
+            restartButton = arena.select('#restart-button');
+            restartButton.mousePressed(restartModel);
+            arena.frameRate(30);
+            arena.ellipseMode(arena.CENTER);
+        };
 
-    frameRate(30);
-    ellipseMode(CENTER);
+        arena.draw = () => {
+            if (model.isFinished()) {
+            } else {
+                let sd = socialDistanceSlider.value() / 100.0;
+                if (model.socialDistance != sd) {
+                    socialDistanceValue.html(sd);
+                    model.socialDistance = sd;
+                }
 
-    restartButton.mousePressed(restartModel);
-}
+                arena.background("#000000");
+                /* arena */
+                arena.noStroke();
+                /* dead balls first */
+                for (let b of model.balls) {
+                    if (b.isDead()) { b.display(); }
+                }
+                /* live balls */
+                for (let b of model.balls) {
+                    if (!b.isDead()) { b.display(); }
+                }
+                model.step();
+                graph.draw();
+            }
+        };
 
-function draw() {
-    if (model.isFinished()) {
-        noLoop();
-    } else {
-        let sd = socialDistanceSlider.value() / 100.0;
-        if (model.socialDistance != sd) {
-            socialDistanceValue.html(str(sd));
-            model.socialDistance = sd;
-        }
-
-        background("#000000");
-        /* arena */
-        noStroke();
-        /* dead balls first */
-        for (let b of model.balls) {
-            if (b.isDead()) { b.display(); }
-        }
-        /* live balls */
-        for (let b of model.balls) {
-            if (!b.isDead()) { b.display(); }
-        }
-        model.step();
-        model.displayStats();
-    }
-}
+    },
+    document.getElementById('#ball-simulation'));
