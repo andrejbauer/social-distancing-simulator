@@ -2,10 +2,10 @@
    https://www.washingtonpost.com/graphics/2020/world/corona-simulator/
 
    Copyright (c) 2020 Andrej Bauer. This work is licenced under the MIT licence.
-*/
 
-console.log("FOO");
-console.log("BAR");
+   **Disclaimer:** this simulation illustrates the qualitative aspects of epidemics only.
+   It is *not* a validated model of actual epidemics.
+*/
 
 /* Colors of sick, healthy, immune and dead balls. */
 let SICK_COLOR = "#FF0000";
@@ -14,8 +14,8 @@ let IMMUNE_COLOR = "#FFFFA0";
 let DEAD_COLOR = "#404040";
 
 /* Display area */
-let totalWidth = 640; /* total width */
-let totalHeight = 640; /* total height */
+let totalWidth = 320; /* total width */
+let totalHeight = 320; /* total height */
 
 /* Division of display area into parts */
 let gapHeight = totalHeight >> 4; /* the gap for numbers display */
@@ -35,6 +35,7 @@ let IMMUNE = 0;
 function Ball(x, y, direction, stationary, id, model) {
     this.x = x;
     this.y = y;
+    this.diameter = (arenaWidth + arenaHeight) / 150 ;
     this.direction = direction;
     this.velocity = 2;
     this.stationary = stationary;
@@ -42,14 +43,16 @@ function Ball(x, y, direction, stationary, id, model) {
     this.model = model;
     this.status = HEALTHY;
 
-    this.isHealthy = function () { return (status == HEALTHY); };
-    this.isImmune = function () { return (status == IMMUNE); };
-    this.isDead = function () { return (status == DEAD); };
-    this.isSick = function () { return (status > 0) ; };
+    this.isHealthy = function () { return (this.status == HEALTHY); };
+    this.isImmune = function () { return (this.status == IMMUNE); };
+    this.isDead = function () { return (this.status == DEAD); };
+    this.isSick = function () { return (this.status > 0) ; };
 
     /* interact with a ball whose status is s. */
     this.contactWith = function (s) {
-        if (this.isHealthy() && (s > 0)) { this.status =  this.model.sickTime; }
+        if (this.isHealthy() && (s > 0)) {
+            this.status = this.model.sickTime;
+        }
     }
 
     this.statusColor = function () {
@@ -81,7 +84,7 @@ function Ball(x, y, direction, stationary, id, model) {
             let dy = others[i].y - this.y;
             let distance2 = dx*dx + dy*dy;
             if (distance2 < this.diameter * this.diameter) {
-                let s = status;
+                let s = this.status;
                 this.contactWith(others[i].status);
                 others[i].contactWith(s);
                 this.direction = random(0, 2 * PI);
@@ -102,18 +105,18 @@ function Ball(x, y, direction, stationary, id, model) {
 function Model(socialDistance, mortality, sickTime) {
     this.socialDistance = socialDistance; /* proportion of stationary balls */
     this.sickTime = sickTime; /* how long a ball is sick */
-    this.maxTime = 10 * sickTime; /* maximum time of simulation */
+    this.maxTime = 30 * sickTime; /* maximum time of simulation */
     this.mortality = mortality; /* how likely an infected ball dies */
     this.population = 1000; /* initial population */
 
     /* Initialize the balls */
-    this.balls = Array(population);
-    for (let i = 0; i < population; i++) {
-        balls[i] = Ball(random(arenaWidth), random(arenaHeight), random(0, 2 * PI),
-                         (i <= population * socialDistance), i, this);
+    this.balls = Array(this.population);
+    for (let i = 0; i < this.population; i++) {
+        this.balls[i] = new Ball(random(arenaWidth), random(arenaHeight), random(0, 2 * PI),
+                                 (i <= this.population * this.socialDistance), i, this);
     }
     /* Make one of them sick */
-    balls[population-1].status = sickTime;
+    this.balls[this.population-1].status = this.sickTime;
 
     /* statistics */
     this.currentTime = 0;
@@ -123,7 +126,7 @@ function Model(socialDistance, mortality, sickTime) {
     this.deadStat = new Array(this.maxTime);
 
     this.isFinished = function () {
-        return (this.timeSlice > 0) && (this.timeSlice >= this.maxTime-1 || this.sickStat[this.timeSlice-1] == 0);
+        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 || this.sickStat[this.currentTime-1] == 0);
     };
 
     /* Perform one step of simulation */
@@ -134,17 +137,16 @@ function Model(socialDistance, mortality, sickTime) {
         let si = 0;
         let de = 0;
         let he = 0;
-        for (let i = 0; i < population; i++) {
+        for (let i = 0; i < this.population; i++) {
             if (this.balls[i].isImmune()) { im++; }
             else if (this.balls[i].isDead()) { de++; }
             else if (this.balls[i].isSick()) { si++; }
             else { he++; }
         }
-        this.immuneStat[currentTime] = im;
-        this.sickStat[currentTime] = si;
-        this.deadStat[currentTime] = de;
-        this.healthyStat[currentTime] = he;
-
+        this.immuneStat[this.currentTime] = im;
+        this.sickStat[this.currentTime] = si;
+        this.deadStat[this.currentTime] = de;
+        this.healthyStat[this.currentTime] = he;
         this.currentTime++;
 
         /* update the balls */
@@ -219,7 +221,7 @@ let model;
 
 function setup() {
     createCanvas(totalWidth, totalHeight);
-    model = Model(0.3, 0.75, 100);
+    model = new Model(0.95, 0.1, 100);
 }
 
 function draw() {
