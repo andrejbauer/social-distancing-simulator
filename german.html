@@ -1,0 +1,116 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+  <h1>'Social distancing' Simulator</h1>
+
+  <p>Mit diesem Simulator kannst du den Effekt von 'social distancing' auf die
+    Verbreitung einer ansteckenden Krankheit interaktiv austesten.
+    Jede Kugel representiert eine Person, welche entweder gesund (Weiss), immun (Gelb),
+    krank (Rot) oder tot (Grau) ist.
+    Eine gesunde Person wird krank sobald sie mit einer kranken Person in kontakt kommt.
+    Wenn eine kranke Person die Krankheit übersteht wird sie immun.
+  </p>
+
+  <p>Bewege die Regelbalken um die Parameter zu bewegen und beobachte was passiert.
+    Unten findest du eine detailierte beschreibung.</p>
+
+  <table class='parameters'>
+  <tr>
+  <td>'Social distance' (Distanz)</td>
+  <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
+  <td><span id="social-distance-value">10</span>%</td>
+  <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Restart'/></td>
+  </tr>
+  <tr>
+  <td>Sterblichkeit</td>
+  <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
+  <td><span id="mortality-value">3</span>%</td>
+  </tr>
+  <tr>
+  <td>Krankheitsdauer</td>
+  <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
+     oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
+     onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
+  <td><span id="sick-time-value">2.0</span>s</td>
+  </tr>
+  </table>
+
+  <div id="ball-simulation"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span> Gesunde</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span> Immune</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span> Kranke</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> Tote</td>
+    <td>Zeit</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph"></div>
+
+  <p><b>Social distancing</b> bestimmt in welchem Ausmaß sich voneinander distanziert verhält.
+    Bei einem Wert von 0% gibt es kein 'distancing' und die Personen bewegen sich mit
+    Maximalgeschwindigkeit. Somit gibt es unter ihnen viel Kontakt.
+    und so that there is a great deal of contact between them. At
+    Bei einem Wert von 100% stehen alle still und es gibt keinerlei Kontakt.
+  </p>
+
+  <p><b>Sterblichkeit</b> bestimmt die Wahrscheinlichkeit, dass eine kranke Person
+    an der Krankheit stirbt. Bei einem Wert von 0% stirbt niemand and der Krankheit.
+    Bei einem Wert von 100% stirbt jeder darans.</p>
+
+  <p><b>Krankheitsdauer</b> bestimmt wie lange eine Person krank bleibt.
+    Umso länger diese Größe, desto mehr Möglichkeiten ergeben sich, dass eine
+    Kranke person mehr Leute ansteckt.
+    Die Animation entspricht einer sehr schnellen Bewegung, aber bloß weil wir
+    die verstrichene Zeit gerne in abgelaufenden Sekunden ausdrücken möchten.
+  </p>
+
+  <p>
+  Die Simulation macht einige vereinfachende Annahmen. Darunter die Folgenden:
+  Es gibt keine Inkubationszeit;
+  Personen sind während ihrer gesammten Krankheitsdauer ansteckend;
+  Kontakt führ immer zur einer Ansteckung.
+  </p>
+
+  <p>
+    Der Author <a href="http://www.andrej.com/">Andrej Bauer</a> war zu
+    dieser Simulation von einem
+    <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">Artikel</a>
+    der Washington Post von Harry Stevens inspiritiert.
+    Der Programm-code ist frei im GitHub-Projekt
+    <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>
+    verfügbar.
+    Bitte hilf diesen code zu verbessern und übersetze ihn in deine Sprache.
+  </p>
+
+  <p><a href="./index.html">Andere Sprachen</a>.
+
+  <p><b>Warnung:</b> Diese Simulation dient rein .ehrtechnischen Zwecken.
+    Es demonstriert die Komplexität des 'social distancing' bei einer Epidemie
+    mit einem frei gewählten mathematischen Model.
+    Keine praktischen Schlussfolgerungen sollten daraus gezogen werden.
+  </p>
+
+  </div>
+</body>
+</html>
