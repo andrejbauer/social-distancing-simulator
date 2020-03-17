@@ -1,7 +1,7 @@
-# Ball epidemics
+# Social distancing simulator
 
-A simple & mostly unrealistic model of epidemics in which balls collide on a torus and
-pass an infection.
+This is the source code for a simple simulator of social distancing in an epidemic,
+available at [`http://social-distancing-simulator.andrej.com`](http://social-distancing-simulator.andrej.com/).
 
-You should not draw any conclusions about actual desease spread from this simulation. Its
-purpose is to demonstrate *qualitatively* the dynamics of an epidemic.
+If you would like to contribute to the project, please fork the repository and
+submit a pull request. We are looking for translations into other languages.
