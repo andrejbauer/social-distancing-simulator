@@ -1,0 +1,96 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+  <h1>Simulateur d'éloignement social</h1>
+
+  <p>Avec ce simulateur, on peut interactivement explorer les effets d'éloignement social sur la propagation d'une maladie.  Chaque point représente une personne qui peut être saine (blanc), immunisée (jaune), malade (rouge), ou morte (grise).  Une personne saine tombe malade quand le point entre en collision avec un malade.  Quand une personne malade survit l'infection, elle devient immune.
+  </p>
+  
+  <p>Déplacez les barres de défilement pour changer les parametres et constatez à ce qu'arrive.  Une explication détaillée est disponible ci-dessous.</p>
+
+  <table class='parameters'>
+  <tr>
+  <td>Éloignement social</td>
+  <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
+  <td><span id="social-distance-value">10</span>%</td>
+  <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Restart'/></td>
+  </tr>
+  <tr>
+  <td>Mortalité</td>
+  <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
+  <td><span id="mortality-value">3</span>%</td>
+  </tr>
+  <tr>
+  <td>Temps de maladie</td>
+  <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
+     oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
+     onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
+  <td><span id="sick-time-value">2.0</span>s</td>
+  </tr>
+  </table>
+
+  <div id="ball-simulation"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span> saine</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span> immune</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span> malade</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> morte</td>
+    <td>temps</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph"></div>
+
+  <p><b>Éloignement social</b> contrôle à quel point la population fait respecter l'éloignement social. A 0% il n'y a pas d'éloignement social et les gens bougent à la vitesse 
+    maximale, afin qu'ils se touchent beaucoup. A
+    100%, tout le monde reste fixé et ils se touchent pas du tout.
+  </p>
+
+  <p><b>Mortalité</b> est la probabilité qu'un malade meurt. Si vous le mettez à 0%, personne mourra, bien qu'une mortalité à 100% implique que tout ceux qui tombe malade mourra.</p>
+
+  <p><b>Temps de maladie</b> détermine la durée de leur malade.  Plus elle reste malade longtemps, plus la probabilité que cette personne va propager l'infection.  On mesure le temps en secondes parceque la simulation marche très vite.  </p>
+
+  <p>
+  La simulation intentionnellement fait quelques hypothèses simplificatrices, parmi eux:
+  il n'y a pas une période d'incubation;
+  les gens sont contagieux pour tout la duration de leur maladie;
+  et la probabilité de propager l'infection au moyen de la contacte est 100%.
+  </p>
+
+  <p>
+    L'auteur <a href="http://www.andrej.com/">Andrej Bauer</a> a trouvé
+    l'inspriation pour la simulation d'un article de Washington Post <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">article</a> par Harry Stevens.
+    Le code source est librement disponible comme un projet GitHub <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>.
+    Merci d'aider à améliorer le code en le traductant en ta langue.
+  </p>
+
+  <p>Voir cette page en <a href="./index.html">d'autres langues</a>.
+
+  <p><b>Décharge de responsabilité:</b> Le but de ce simulator est purement pédagogique. Il
+    démontre la complexité d'éloignement social au milieu d'une épidemie au niveau d'une modèle mathématique artificielle.
+    Il ne faut pas l'utiliser à faire conclu pour quoi que ce soit quant à de vraies maladies.
+  </p>
+
+  </div>
+</body>
+</html>
