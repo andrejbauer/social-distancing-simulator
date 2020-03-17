@@ -122,6 +122,7 @@ function Model() {
 
         /* statistics */
         this.currentTime = 0;
+        this.completionTime = 0;
         this.healthyStat = [this.population-1];
         this.immuneStat = [0];
         this.sickStat = [1];
@@ -147,7 +148,8 @@ function Model() {
     }
 
     this.isFinished = function () {
-        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 || this.sickStat[this.sickStat.length-1] == 0);
+        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 ||
+                                          (this.currentTime >= graphWidth && this.currentTime > this.completionTime));
     };
 
     /* The velocity of balls, depending on social distance. */
@@ -174,6 +176,7 @@ function Model() {
         this.sickStat.push(si);
         this.deadStat.push(de);
         this.healthyStat.push(he);
+        if (si > 0) { this.completionTime++; }
         this.currentTime++;
 
         /* update the balls */
@@ -201,7 +204,7 @@ function Model() {
         document.getElementById('immune-stat').innerHTML = im;
         document.getElementById('sick-stat').innerHTML = si;
         document.getElementById('dead-stat').innerHTML = de;
-        document.getElementById('current-time').innerHTML = (this.currentTime / FRAME_RATE).toFixed(1);
+        document.getElementById('current-time').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
         graph.background("#FFFFFF");

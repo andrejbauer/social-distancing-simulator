@@ -1,5 +1,5 @@
 body {
-  margin: auto;
+  margin: 0px auto 100px 0px;
   padding: 0;
   background: #ffffff;
   color: #000000;
@@ -28,8 +28,8 @@ h1 {
 }
 
 h2 {
-  margin: 20px auto 30px 0px;
-  font-size: 24px;
+  margin: 30px auto 20px 0px;
+  font-size: 20px;
   font-weight: bold;
   letter-spacing: 1px;
   color: #606060;
@@ -111,6 +111,7 @@ table.statistics td {
   width: 20%;
   font-size: 14px;
   text-align: center;
+  vertical-align: bottom;
 }
 
 div#ball-simulation {

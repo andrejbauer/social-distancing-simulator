@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
   <script language="javascript" type="text/javascript" src="BouncyBallsEpidemics.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -9,6 +9,15 @@
 <body>
   <div class="container">
   <h1>Social distancing simulator</h1>
+
+  <p>With this simulator you can explore interactively the effects of social distancing on
+    the spread of a contagious disease. Each ball represents a person which can be healthy
+    (white), immune (yellow), sick (red), or dead (gray). A healthy person becomes sick
+    when it collides with a sick one. If a sick person survives the infection, it becomes
+    immune and cannot be infected again.
+  </p>
+
+  <p>Move the sliders to change the parameters:</p>
 
   <table class='parameters'>
   <tr>
@@ -37,41 +46,56 @@
 
   <div id="ball-simulation"></div>
 
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span> healthy</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span> immune</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span> sick</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> dead</td>
+    <td>time</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
   <div id="ball-graph"></div>
 
-  <table class="statistics"><tr>
-    <td><span id="healthy-stat"></span>% healthy ○</td>
-    <td><span id="immune-stat"></span>% immune <span style="color: #FFFF40">●</span></td>
-    <td><span id="sick-stat"></span>% sick <span style="color: #FF0000">●</span></td>
-    <td><span id="dead-stat"></span>% dead <span style="color: #808080">●</span></td>
-    <td><span id="current-time"></span>s</td>
-  </tr></table>
-
-  <h2>About the simulation</h2>
-
   <p>
-  Each ball represents a person which can be healthy (white), immune (yellow), sick (red), or dead (gray).
-  A healthy ball becomes sick when it collides with a sick one. If a sick ball survives the infection, it
-  becomes immune and cannot be infected again.
-  </p>
-
-  <p>
-  You may control:
+  The simulation has three parameters:
   <ul>
-  <li><b>social distancing</b> controls the speed of the balls</li>
-  <li><b>mortality</b> is the probability that a sick ball dies</li>
-  <li><b>sick time</b> controls the length of the time whwn a ball is sick</li>
+  <li><b>social distancing</b> controls social distance through velocity</li>
+  <li><b>mortality</b> is the probability that a sick person dies</li>
+  <li><b>sick time</b> is the duration of sickness</li>
   </ul>
   </p>
 
   <p>
-    The author of the simulator is <a href="http://www.andrej.com/">Andrej Bauer</a>.
-    The inspiration for it came from an <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">article</a> by Harry Stevens in Washington Post.
-    The source code is freely available on <a href="https://github.com/andrejbauer/ball-epidemics">GitHub</a>.
+  The simulation purposely makes a number of simplifying assumptions, among them:
+  there is no incubation period;
+  persons are contagious for the entire duration of their sickness;
+  and the probability of passing the infection through contact is 100%.
   </p>
 
-  <p><b>Disclaimer:</b>
-    The purpose of the simulator is purely educational. It demonstrates the complexity of social distancing and epidemics, but it should not be used to draw any conclusions about real epidemics.
+  <p>
+    The author of the simulator is <a href="http://www.andrej.com/">Andrej Bauer</a>.
+    The inspiration for it came from a Washington Post article <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">"Why outbreaks like coronavirus
+spread exponentially, and
+how to “flatten the curve”"</a> by Harry Stevens, which I recommend as further reading.
+  </p>
+
+  <p>The source code is freely available as a GitHub project <a href="https://github.com/andrejbauer/ball-epidemics"><code>ball-epidemics</code></a>.
+   Please help improve the code and translate the simulation into your language.
+  </p>
+
+  <p><b>Disclaimer:</b> The purpose of the simulator is purely educational. It
+    demonstrates the complexity of social distancing in an epidemic in terms of an
+    artificial mathematical model. It should not be used to draw any conclusions about
+    real diseases.
   </p>
 
   </div>
