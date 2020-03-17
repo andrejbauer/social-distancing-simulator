@@ -5,5 +5,5 @@ available at
 
 > [`http://social-distancing-simulator.andrej.com`](http://social-distancing-simulator.andrej.com/)
 
-If you would like to contribute to the project, please fork the repository and
-submit a pull request. We are looking for translations into other languages.
+To contribute to the project, please fork the repository and submit a pull request.
+We are looking for translations into other languages!
