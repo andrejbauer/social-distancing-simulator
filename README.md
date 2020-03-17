@@ -7,3 +7,10 @@ available at
 
 To contribute to the project, please fork the repository and submit a pull request.
 We are looking for translations into other languages!
+
+### Contributors
+
+The following people contributed to the project:
+
+* [Andrej Bauer](http://www.andrej.com/) (principal author)
+* [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German translation)
