@@ -65,14 +65,21 @@
 
   <div id="ball-graph"></div>
 
-  <p>
-  The simulation has three parameters:
-  <ul>
-  <li><b>social distancing</b> controls social distance through velocity</li>
-  <li><b>mortality</b> is the probability that a sick person dies</li>
-  <li><b>sick time</b> is the duration of sickness</li>
-  </ul>
+  <p><b>Social distancing</b> controls to what extend the population enforces
+    social distancing. At 0% there is no social distancing and the persons move
+    with maximum speed, so that there is a great deal of contact between them. At
+    100% everyone stays still and there is no contact at
+    all.
   </p>
+
+  <p><b>Mortality</b> is the probability that a sick person dies. If you set it
+  to 0% nobody dies, while 100% mortality means that anybody who catches the
+  disease will die.</p>
+
+
+  <p><b>Sick time</b> determines for how long a person is sick. The longer the time,
+    the more opportunity the person has to spread the infection. The time is measured
+    in seconds because the simulation runs very fast.</p>
 
   <p>
   The simulation purposely makes a number of simplifying assumptions, among them:
