@@ -10,7 +10,7 @@
 /* Colors of sick, healthy, immune and dead balls. */
 const SICK_COLOR = "#FF0000";
 const HEALTHY_COLOR = "#FFFFFF";
-const IMMUNE_COLOR = "#FFFFA0";
+const IMMUNE_COLOR = "#FFFF40";
 const DEAD_COLOR = "#808080";
 
 const FRAME_RATE = 30;
@@ -38,7 +38,7 @@ let IMMUNE = 0;
 /* positive values are time-to-still-be-sick */
 
 function debug(msg) {
-    document.getElementById('debug').innerHTML = msg;
+    document.getElementById('debug').innerHTML = document.getElementById('debug').innerHTML + msg;
 }
 
 /*********** BALL ************/
@@ -118,7 +118,7 @@ function Model() {
         this.sickTime = sickTime; /* how long a ball is animation frames */
         this.maxTime = graphWidth * 5; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
-        this.population = 1000; /* initial population */
+        this.population = 500; /* initial population */
 
         /* statistics */
         this.currentTime = 0;
@@ -201,7 +201,7 @@ function Model() {
         document.getElementById('immune-stat').innerHTML = im;
         document.getElementById('sick-stat').innerHTML = si;
         document.getElementById('dead-stat').innerHTML = de;
-        document.getElementById('current-time').innerHTML = (this.currentTime / FRAME_RATE).toFixed(2);
+        document.getElementById('current-time').innerHTML = (this.currentTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
         graph.background("#FFFFFF");
@@ -237,21 +237,16 @@ function Model() {
             graph.vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
         graph.endShape(graph.CLOSE);
+        graph.stroke("#000000");
+        graph.strokeWeight(4);
+        graph.noFill();
+        graph.rect(x0, y0, graphWidth, graphHeight);
     };
 }
 
 /********* MAIN SETUP **********/
 let model = new Model();
 model.initialize(0.5, 0.1, 150);
-
-function getSocialDistance() {
-    return socialDistanceSlider.value() / 100.0 ;
-}
-
-function restartModel() {
-    arena.loop();
-    model.initialize(getSocialDistance(), 0.1, 50);
-}
 
 graph = new p5(
     (graph) => {
@@ -264,7 +259,7 @@ graph = new p5(
             model.displayStats();
         };
     },
-    document.getElementById('ball-graph'));
+    'ball-graph');
 
 arena = new p5(
     (arena) => {
@@ -275,7 +270,7 @@ arena = new p5(
             sickTimeSlider = arena.select('#sick-time-slider');
             model.refreshParameters();
             restartButton = arena.select('#restart-button');
-            restartButton.mousePressed(model.restart);
+            restartButton.mousePressed(() => { model.restart (); });
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
         };
@@ -301,4 +296,4 @@ arena = new p5(
         };
 
     },
-    document.getElementById('ball-simulation'));
+    'ball-simulation');

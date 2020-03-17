@@ -1,0 +1,137 @@
+body {
+  margin: auto;
+  padding: 0;
+  background: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  width: 100%;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+}
+
+/* General & 'Reset' Stuff */
+
+.container {
+  width: 90%;
+  max-width: 640px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 35px;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  margin: 20px auto 30px 0px;
+  font-weight: bold;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  margin: 20px auto 30px 0px;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #606060;
+}
+
+h3, h4, h5, h6 {
+  font-weight: normal;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  color: #404040;
+}
+
+/* Main Content
+*/
+
+#main_content {
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+ul {
+  padding: 0;
+}
+
+ul li {
+  list-style: none;
+}
+
+ul li:before {
+  content: ">>";
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+}
+
+ul li p {
+  margin: 0;
+}
+
+table.parameters {
+  margin-bottom: 20px;
+}
+
+table.parameters td {
+  white-space: nowrap;
+  padding: 0 20px 0 0;
+  text-align: left;
+}
+
+td.restart-button {
+  width: 99%;
+  padding: 0;
+  vertical-align: bottom;
+  text-align: right;
+}
+
+input.slider {
+ -webkit-appearance: none;
+  background: #000000;
+  outline: none;
+}
+
+input#restart-button {
+  margin-left: 20px;
+  background-color: #FFFFFF;
+  border: 2px solid;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+}
+
+table.statistics {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.statistics td {
+  width: 20%;
+  font-size: 14px;
+  text-align: center;
+}
+
+div#ball-simulation {
+  margin: auto;
+}
+
+div#ball-graph {
+  margin: 20px auto 5px auto;
+}
+
+hr {
+  height: 0;
+  border: 0;
+  border-bottom: 1px dashed #a0a0a0;
+  color: #b5e853;
+}
+
+/* Links
+   a, a:hover, a:visited
+*/
+
+a {
+  color: #0000ff;
+}
