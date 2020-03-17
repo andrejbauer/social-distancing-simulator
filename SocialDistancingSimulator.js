@@ -87,6 +87,18 @@ function Ball(x, y, direction, id, model) {
 
     this.collide = function () {
         if (this.isDead()) { return; }
+		//Check collisions with a vertical wall
+		if (this.x + this.model.velocity() * Math.cos(this.direction) < 0 || this.x + this.model.velocity() * Math.cos(this.direction) > arenaWidth){
+			if(this.direction<=Math.PI){
+				this.direction = Math.PI - this.direction;
+			}else{
+				this.direction = 3*Math.PI - this.direction;
+			}
+		}
+		//Check collisions with a horizontal wall
+		if (this.y + this.model.velocity() * Math.sin(this.direction) < 0 || this.y + this.model.velocity() * Math.sin(this.direction) > arenaHeight){
+			this.direction = 2*Math.PI - this.direction;
+		}
         let others = this.model.balls;
         for (let i = 0; i < id; i++) {
             if (others[i].isDead()) { continue; }
