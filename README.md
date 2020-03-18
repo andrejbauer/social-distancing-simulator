@@ -28,6 +28,7 @@ Thank you!
 The following people contributed to the project, in alphabetical order:
 
 * [Andrej Bauer](http://www.andrej.com/) (principal author)
-* [Bryan Kaperick](https://github.com/BKaperick) (French translation)
-* [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German translation)
-* [zznidar](https://github.com/zznidar) (Slovene translation)
+* [Bryan Kaperick](https://github.com/BKaperick) (French)
+* [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German)
+* [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
+* [zznidar](https://github.com/zznidar) (Slovene)
