@@ -14,3 +14,4 @@ The following people contributed to the project:
 
 * [Andrej Bauer](http://www.andrej.com/) (principal author)
 * [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German translation)
+* [zznidar](https://github.com/zznidar) (Slovene translation)
