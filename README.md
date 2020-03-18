@@ -27,6 +27,7 @@ Thank you!
 
 The following people contributed to the project, in alphabetical order:
 
+* [Miriam Backens](https://www.birmingham.ac.uk/staff/profiles/computer-science/backens-miriam.aspx) (German)
 * [Andrej Bauer](http://www.andrej.com/) (principal author)
 * [Bryan Kaperick](https://github.com/BKaperick) (French)
 * [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German)
