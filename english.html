@@ -4,20 +4,21 @@
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
   <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
   <link rel="stylesheet" href="style.css">
+  <title>Social distancing simulator</title
 </head>
 
 <body>
   <div class="container">
   <h1>Social distancing simulator</h1>
 
-  <p>With this simulator you can explore interactively the effects of social distancing on
-    the spread of a contagious disease. Each ball represents a person who can be healthy
-    (white), immune (yellow), sick (red), or dead (gray). A healthy person becomes sick
-    when it collides with a sick one. When a sick person survives the infection, it becomes
-    immune.
+  <p>This simulator allows you to interactively explore the effects of social distancing on
+    the spread of any contagious disease. Each ball represents a person who can be either healthy
+    (white), immune (yellow), infected (red), or deceased (gray). A healthy person is infected
+    when they collide with an infected person. After a period of infection, a person either dies
+    or become permanently immune.
   </p>
 
-  <p>Move the sliders to change the parameters and observe what happens. A detailed explanation is available below.</p>
+  <p>Move the sliders left and right to change the parameters and observe what happens. A detailed explanation is available below.</p>
 
   <table class='parameters'>
   <tr>
@@ -36,7 +37,7 @@
   <td><span id="mortality-value">3</span>%</td>
   </tr>
   <tr>
-  <td>Sick time</td>
+  <td>Infection duration</td>
   <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
      oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
      onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
@@ -51,7 +52,7 @@
     <td><span style="font-size: 32px;">○</span> healthy</td>
     <td><span style="font-size: 32px; color: #FFFF40">●</span> immune</td>
     <td><span style="font-size: 32px; color: #FF0000">●</span> sick</td>
-    <td><span style="font-size: 32px; color: #808080">●</span> dead</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> deceased</td>
     <td>time</td>
     </tr>
     <tr>
@@ -68,18 +69,18 @@
   <p><b>Social distancing</b> controls to what extent the population enforces
     social distancing. At 0% there is no social distancing and the persons move
     with maximum speed, so that there is a great deal of contact between them. At
-    100% everyone stays still and there is no contact at
-    all.
+    100% everyone stays still and there is no contact at all.
   </p>
 
-  <p><b>Mortality</b> is the probability that a sick person dies. If you set it
-  to 0% nobody dies, while 100% mortality means that anybody who catches the
-  disease will die.</p>
+  <p><b>Mortality</b> is the probability that a sick person dies. If you set mortality
+  to 0% nobody dies, while a mortality of 100% means that anybody who catches the
+  infection will die.</p>
 
 
-  <p><b>Sick time</b> determines for how long a person is sick. The longer the time,
-    the more opportunity the person has to spread the infection. The time is measured
-    in seconds because the simulation runs very fast.</p>
+  <p><b>Infection duration</b> determines for how long a person is infected. The
+    longer the time, the more opportunity the person has to spread the
+    infection. Since the simulation runs at high speed, time is measured in
+    seconds.</p>
 
   <p>
   The simulation purposely makes a number of simplifying assumptions, among them:
@@ -89,10 +90,12 @@
   </p>
 
   <p>
-    The author <a href="http://www.andrej.com/">Andrej Bauer</a> got the
-    inspiration for the simulation from a Washington Post <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">article</a> by Harry Stevens.
+    The author of the simulation is <a href="http://www.andrej.com/">Andrej
+    Bauer</a>, was inspired to create this simulation by a Washington Post
+    <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">article</a>
+    by Harry Stevens.
     The source code is freely available as a GitHub project <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>.
-   Please help improve the code and translate it into your language.
+    Please help improve the code and translate it into your language.
   </p>
 
   <p>See this page in <a href="./index.html">other languages</a>.
@@ -100,7 +103,7 @@
   <p><b>Disclaimer:</b> The purpose of the simulator is purely educational. It
     demonstrates the complexity of social distancing in an epidemic in terms of an
     artificial mathematical model. It should not be used to draw any conclusions about
-    real diseases.
+    real contagious diseases.
   </p>
 
   </div>

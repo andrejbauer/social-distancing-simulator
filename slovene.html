@@ -16,7 +16,7 @@
     z obolelo. Ko obolela oseba preživi bolezen, postane imuna.
   </p>
 
-  <p>Uporabite drsnike za spreminjanje parametrov in opazujte, kaj se dogaja. Podrobnejšo razlago najdete spodaj.</p>
+  <p>Premikajte drsnike levo in desno ter opazujte, kakšen vpliv imajo spremembe parametrov. Podrobnejšo razlago parametrov najdete spodaj.</p>
 
   <table class='parameters'>
   <tr>
@@ -24,7 +24,7 @@
   <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
      oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
      onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
-  <td><span id="social-distance-value">10</span>&nbsp;%</td>
+  <td><span id="social-distance-value">10</span>%</td>
   <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Ponovno zaženi'/></td>
   </tr>
   <tr>
@@ -32,14 +32,14 @@
   <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
        oninput="document.getElementById('mortality-value').innerHTML=this.value;"
        onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
-  <td><span id="mortality-value">3</span>&nbsp;%</td>
+  <td><span id="mortality-value">3</span>%</td>
   </tr>
   <tr>
   <td>Čas bolezni</td>
   <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
      oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
      onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
-  <td><span id="sick-time-value">2.0</span>&nbsp;s</td>
+  <td><span id="sick-time-value">2.0</span>s</td>
   </tr>
   </table>
 
@@ -54,27 +54,27 @@
     <td>time</td>
     </tr>
     <tr>
-    <td><span id="healthy-stat"></span>&nbsp;%</td>
-    <td><span id="immune-stat"></span>&nbsp;%</td>
-    <td><span id="sick-stat"></span>&nbsp;%</td>
-    <td><span id="dead-stat"></span>&nbsp;%</td>
-    <td><span id="current-time"></span>&nbsp;s</td>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
     </tr>
   </table>
 
   <div id="ball-graph"></div>
 
-  <p><b>Izogibanje stikov</b> nadzira, do kakšne mere populacija upošteva izogibanje družabnim stikom. Ko je 0&nbsp;%, ni nobenega izogibanja in
+  <p><b>Izogibanje stikov</b> nadzira, do kakšne mere populacija upošteva izogibanje družabnim stikom. Ko je 0%, ni nobenega izogibanja in
 osebe se gibljejo z največjo hitrostjo, tako da imajo veliko možnosti za medsebojne kontakte.
-    Pri vrednosti 100&nbsp;% vsi stojijo na miru in družabnih stikov sploh ni.
+    Pri vrednosti 100% vsi stojijo na miru in družabnih stikov sploh ni.
 
-  <p><b>Umrljivost</b> je verjetnost, da okužena oseba umre. Če jo nastavite na 0&nbsp;%, ne bo umrl nihče, če pa jo nastavite na 100&nbsp;%, bodo umrli vsi, ki se okužijo.</p>
+  <p><b>Umrljivost</b> je verjetnost, da okužena oseba umre. Če jo nastavite na 0%, ne bo umrl nihče, če pa jo nastavite na 100%, bodo umrli vsi, ki se okužijo.</p>
 
   <p><b>Čas bolezni</b> določa, koliko časa je oseba bolna. Daljši kot je čas, več priložnosti ima oboleli za širjenje okužbe. Čas merimo v sekundah, ker simulacija poteka zelo hitro.</p>
 
   <p>
   Simulacija je namenoma preprosta in sloni na nekaterih predpostavkah:
-  ni inkubacijske dobe; osebe so kužne ves čas obolenja; in verjetnost okužbe pri stiku z obolelim je 100&nbsp;%.
+  ni inkubacijske dobe; osebe so kužne ves čas obolenja; in verjetnost okužbe pri stiku z obolelim je 100%.
   </p>
 
   <p>

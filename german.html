@@ -4,26 +4,27 @@
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
   <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
   <link rel="stylesheet" href="style.css">
+  <title>Simulator zur Meidung sozialer Kontakte</title
 </head>
 
 <body>
   <div class="container">
-  <h1>'Social distancing' Simulator</h1>
+  <h1>Simulator zur Meidung sozialer Kontakte</h1>
 
-  <p>Mit diesem Simulator kannst du den Effekt von 'social distancing' auf die
+  <p>Mit diesem Simulator kannst du den Effekt der Meidung sozialer Kontakte (engl. 'social distancing') auf die
     Verbreitung einer ansteckenden Krankheit interaktiv austesten.
-    Jede Kugel representiert eine Person, welche entweder gesund (Weiß), immun (Gelb),
+    Jeder Punkt stellt eine Person dar, welche entweder gesund (Weiß), immun (Gelb),
     krank (Rot) oder tot (Grau) ist.
     Eine gesunde Person wird krank, sobald sie mit einer kranken Person in Kontakt kommt.
     Wenn eine kranke Person die Krankheit übersteht, wird sie immun.
   </p>
 
   <p>Bewege die Regelbalken um die Parameter zu bewegen und beobachte was passiert.
-    Unter der Grafik findest du eine detailierte Beschreibung.</p>
+    Unter der Grafik findest du eine detaillierte Beschreibung.</p>
 
   <table class='parameters'>
   <tr>
-  <td>'Social distance' (Distanz)</td>
+  <td>Meidungsstärke</td>
   <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
      oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
      onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
@@ -67,8 +68,9 @@
 
   <div id="ball-graph"></div>
 
-  <p><b>Social distancing</b> bestimmt in welchem Ausmaß sich die Personein voneinander "distanziert verhalten".
-    Bei einem Wert von 0% gibt es keine Distanzierung und die Personen bewegen sich mit
+
+  <p><b>Meidungsstärke</b> bestimmt in welchem Ausmaß sich die Personen voneinander "distanziert verhalten".
+    Bei einem Wert von 0% gibt es keine Meidung sozialer Kontakte und die Personen bewegen sich mit
     Maximalgeschwindigkeit. Somit gibt es unter ihnen viel Kontakt.
     Bei einem Wert von 100% stehen alle Personen still und es gibt keinerlei Kontakt.
   </p>
@@ -104,7 +106,7 @@
   <p><a href="./index.html">Andere Sprachen</a>.
 
   <p><b>Warnung:</b> Diese Simulation dient reinen Bildungszwecken.
-    Sie demonstriert die Komplexität des 'social distancing' bei einer Epidemie
+    Sie demonstriert die Komplexität der Meidung sozialer Kontakte ('social distancing') bei einer Epidemie
     mit einem abstrakten mathematischen Modell.
     Keine praktischen Schlussfolgerungen sollten daraus gezogen werden.
   </p>
