@@ -14,7 +14,7 @@ To contribute a new language, please follow these instructions (we take Italian 
 
 1. Copy one of the existing language files to `italian.html`. Note that the file name is lower-case, and that you should use the English name of the language (so that all programmers can tell which language it is), i.e., it would be wrong to use `italiano.html`.
 
-2. Edit the contents of the file `italan.html`.
+2. Edit the contents of the file `italian.html`.
 
 3. Add a link to the file in `index.html`, where you should use the *native* name of the language, so in this case "italiano" (so that the native speakers can recognize it).
 
@@ -27,7 +27,9 @@ Thank you!
 
 The following people contributed to the project, in alphabetical order:
 
+* [Miriam Backens](https://www.birmingham.ac.uk/staff/profiles/computer-science/backens-miriam.aspx) (German)
 * [Andrej Bauer](http://www.andrej.com/) (principal author)
-* [Bryan Kaperick](https://github.com/BKaperick) (French translation)
-* [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German translation)
-* [zznidar](https://github.com/zznidar) (Slovene translation)
+* [Bryan Kaperick](https://github.com/BKaperick) (French)
+* [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German)
+* [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
+* [zznidar](https://github.com/zznidar) (Slovene)
