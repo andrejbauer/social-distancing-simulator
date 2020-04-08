@@ -33,3 +33,4 @@ The following people contributed to the project, in alphabetical order:
 * [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German)
 * [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
 * [zznidar](https://github.com/zznidar) (Slovene)
+* [Milko Rodríguez](https://milko.pe) (Spanish)
