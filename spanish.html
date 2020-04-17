@@ -1,0 +1,97 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title> Simulador de distanciamiento social </title
+</head>
+
+<body>
+  <div class="container">
+  <h1> Simulador de distanciamiento social </h1>
+
+  <p>Este simulador le permite explorar interactivamente los efectos del distanciamiento social en la propagación de cualquier enfermedad contagiosa. Cada círculo representa a una persona que puede estar sana (blanco), inmune (amarillo), infectada (rojo) o fallecida (gris). Una persona sana está infectada cuando se topa con una persona infectada. Después de un período de infección, una persona muere o se vuelve inmune permanentemente.
+  </p>
+
+  <p>Mueva los controles deslizantes hacia la izquierda y hacia la derecha para cambiar los parámetros y observar lo que sucede. Una explicación detallada está disponible a continuación.</p>
+
+  <table class='parametros'>
+  <tr>
+  <td>Distancia social</td>
+  <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
+  <td><span id="social-distance-value">10</span>%</td>
+  <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Reiniciar'/></td>
+  </tr>
+  <tr>
+  <td>Mortalidad</td>'=
+  <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
+  <td><span id="mortality-value">3</span>%</td>
+  </tr>
+  <tr>
+  <td>Duración de la infección</td>
+  <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
+     oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
+     onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
+  <td><span id="sick-time-value">2.0</span>s</td>
+  </tr>
+  </table>
+
+  <div id="ball-simulation"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span> sanos </td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span> immunes</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span> infectados</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> fallecidos</td>
+    <td>tiempo</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph"></div>
+
+  <p><b>Distanciamiento social</b> controla en qué medida la población hace cumplir el distanciamiento social. Al 0% no hay distanciamiento social y las personas se mueven con la máxima velocidad, para que haya un gran contacto entre ellos. En el 100% todos permanecen quietos y no hay ningún contacto.
+
+  </p>
+
+  <p><b>Mortalidad</b> es la probabilidad de que una persona enferma fallezca. Si se establece la mortalidad al 0% nadie fallece, mientras que una mortalidad del 100% significa que cualquiera que atrape la infección morirá.</p>
+
+
+  <p><b>Duración de la infección </b> determina durante cuánto tiempo está infectada una persona. Un tiempo más largo le da a una persona infectada más oportunidades para propagar la infección. Dado que la simulación se ejecuta a alta velocidad, el tiempo se mide en segundos.</p>
+
+  <p>
+    La simulación hace una serie de suposiciones simplificadoras, entre ellas:
+  no hay período de incubación; las personas son contagiosas durante toda la duración de su enfermedad; y la probabilidad de contagiar la infección por contacto es del 100%.
+  </p>
+
+  <p>
+    El autor de la simulación es <a href="http://www.andrej.com/">Andrej
+    Bauer</a>.
+    La idea surgió de un <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">artículo</a> en la publicación del Washington Post escrita por Harry Stevens.
+    El código fuente está disponible de manera libre como proyecto en GitHub <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>.
+   Por favor, ayude a mejorar el código y a traducirlo a su idioma.
+  </p>
+
+  <p>Consulte esta página en <a href="./index.html">otros idiomas</a>.
+
+  <p><b>Descargo de responsabilidad::</b> El propósito del simulador es puramente educativo. Se
+    demuestra la complejidad del distanciamiento social durante una epidemia en términos de una
+    modelo matemático artificial No debe usarse para sacar conclusiones sobre enfermedades contagiosas reales.
+
+  </p>
+
+  </div>
+</body>
+</html>
