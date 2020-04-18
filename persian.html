@@ -1,0 +1,172 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>شبیه‌سازی فاصله‌گذاری اجتماعی</title
+</head>
+
+<body>
+  <div class="container">
+  <h1 dir="rtl" align="center">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+2'>
+  شبیه‌سازی فاصله‌گذاری اجتماعی
+  </font>
+  </h1>
+
+  <p dir="rtl" align="right"> 
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'> 
+  این شبیه‌ساز به شما این امکان را می‌دهد تا تأثیرات فاصله اجتماعی بر شیوع هر بیماری مسری را به صورت تعاملی کشف کنید. هر دایره یک فرد را نشان می‌دهد که می‌تواند سالم (سفید)، ایمن (زرد)، آلوده (قرمز)، یا متوفی (خاکستری) باشد. فرد سالم هنگام برخورد با یک فرد آلوده، آلوده می‌شود. بعد از یک دوره عفونت، فرد یا می‌میرد یا به طور دائم مصون می‌شود.
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+	<font face='Tahoma, Arial,"Times New Roman"' size='+1'> 
+  برای تغییر پارامترها و مشاهده آنچه اتفاق می‌افتد، غلطک‌ها را به چپ و راست حرکت دهید. توضیح مفصل در ادامه ارائه شده است.
+  </font>
+  </p>
+
+  <table class='parameters'>
+  <tr>
+  <td>
+  <font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  فاصله اجتماعی
+  </font>
+  </td>
+  <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
+  <td><span id="social-distance-value">10</span>%</td>
+  <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Restart'/></td>
+  </tr>
+  <tr>
+  <td>
+  <font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  مرگ و میر
+  </font>
+  </td>
+  <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
+  <td><span id="mortality-value">3</span>%</td>
+  </tr>
+  <tr>
+  <td>
+  <font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  مدت زمان عفونت
+  </font>
+  </td>
+  <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
+     oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
+     onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
+  <td><span id="sick-time-value">2.0</span>s</td>
+  </tr>
+  </table>
+
+  <div id="ball-simulation"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	سالم
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	ایمن
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	بیمار
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #808080">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	متوفی
+	</font>
+	</td>
+    <td>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	زمان
+	</font>
+	</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph" dir="rtl" align="right"></div>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>فاصله‌گذاری اجتماعی:</b> 
+  کنترل می‌کند تا چه حد جمعیت فاصله اجتماعی را تحمل می‌کند. در 0٪ فاصله اجتماعی وجود ندارد و افراد با حداکثر سرعت حرکت می‌کنند، به طوری که تماس زیادی بین آنها برقرار می‌شود. در 100٪ همه سر جای خود می‌مانند و تماسی وجود ندارد.
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>مرگ و میر:</b> 
+  این احتمال وجود دارد که فرد بیمار بمیرد. اگر میزان مرگ و میر را 0٪ تعیین کنید، هیچ کس نمی‌میرد، در حالی که مرگ و میر 100٪ به معنای این است که هرکسی که عفونت داشته باشد، خواهد مرد.
+  </font>
+  </p>
+
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>مدت زمان عفونت:</b> 
+  تعیین می‌کند که چه مدت فرد آلوده باقی می‌ماند. مدت زمان طولانی‌تر به فرد آلوده فرصت بیشتری برای گسترش عفونت می‌دهد. از آنجا که این شبیه سازی با سرعت بالا اجرا می‌شود، زمان در ثانیه اندازه‌گیری می‌شود.
+	</font>
+	</p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  برای ساده‌سازی، شبیه‌سازی عمداً تعدادی فرض ساده را در نظر گرفته است: هیچ دوره نهفتگی (کمون) وجود ندارد؛ افراد در تمامی مدت بیماری خود مسری هستند؛ و احتمال انتقال عفونت از طریق تماس 100٪ است.
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+    نویسنده این شبیه‌سازی 
+	<a href="http://www.andrej.com/">Andrej Bauer</a>
+	است.
+    ایده این شبیه‌سازی از
+    <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">این مقاله</a>
+	آمده است، که در
+	Washington post
+	توسط 
+    Harry Stevens
+	نوشته شده است. کد منبع بطور رایگان از طریق یک پروژه گیت‌هاب 
+    <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>
+	در دسترس می‌باشد.
+	لطفاً در بهبود کد کمک کرده و آن را به زبان خود ترجمه کنید.
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  برای دیدن سایر زبان‌ها
+  <a href="./index.html"> این صفحه
+  </a>
+  را ببینید. 
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>بیانیه رفع مسئولیت:</b> 
+  هدف از این شبیه‌سازی صرفاً آموزشی است. این شبیه‌سازی،  پیچیدگی فاصله اجتماعی در طول اپیدمی از نقطه نظر یک مدل ریاضی مصنوعی را نشان می‌دهد. لذا، نباید برای نتیجه گیری در مورد بیماری‌های مسری واقعی استفاده شود.
+  </font>
+  </p>
+
+  </div>
+</body>
+</html>
