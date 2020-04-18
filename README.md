@@ -35,4 +35,5 @@ The following people contributed to the project, in alphabetical order:
 * [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
 * [Yufi Eko Firmansyah](https://github.com/yufieko) (Indonesian)
 * [zznidar](https://github.com/zznidar) (Slovene)
+* [abmalakh](https://github.com/abmalakh) (Persian)
 * [Milko Rodríguez](https://milko.pe) (Spanish)
