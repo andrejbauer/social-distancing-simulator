@@ -27,10 +27,13 @@ Thank you!
 
 The following people contributed to the project, in alphabetical order:
 
+* [Fatimah Ahmadi](http://users.ox.ac.uk/~sedm5524/) (Farsi)
 * [Miriam Backens](https://www.birmingham.ac.uk/staff/profiles/computer-science/backens-miriam.aspx) (German)
 * [Andrej Bauer](http://www.andrej.com/) (principal author)
 * [Bryan Kaperick](https://github.com/BKaperick) (French)
 * [Nikolaj Kuntner](https://github.com/Nikolaj-K) (German)
 * [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
+* [Yufi Eko Firmansyah](https://github.com/yufieko) (Indonesian)
 * [zznidar](https://github.com/zznidar) (Slovene)
 * [abmalakh](https://github.com/abmalakh) (Persian)
+* [Milko Rodríguez](https://milko.pe) (Spanish)
