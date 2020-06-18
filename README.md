@@ -37,3 +37,4 @@ The following people contributed to the project, in alphabetical order:
 * [Milko Rodríguez](https://milko.pe) (Spanish)
 * [Polona Škraba Stanič](https://ailab.ijs.si/people/?uid=71) (English)
 * [zznidar](https://github.com/zznidar) (Slovene)
+* [Marwan Walid](https://github.com/MarwanWalid2) (Arabic)
