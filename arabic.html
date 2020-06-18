@@ -1,0 +1,165 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>محاكي التباعد الاجتماعي</title
+</head>
+
+<body>
+  <div class="container">
+  <h1 dir="rtl" align="center">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+2'>
+  محاكي التباعد الاجتماعي
+  </font>
+  </h1>
+
+  <p dir="rtl" align="right"> 
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'> 
+  تسمح لك هذه المحاكاة باستكشاف آثار التباعد الاجتماعي على
+  انتشار أي مرض معدٍ بشكل تفاعلي. كل دائرة تمثل شخص من الممكن ان يكون صحي(ابيض),منيع(اصفر),,مصاب(احمر),او ميت(رمادي).
+  يصاب الشخص السليم بالعدوى عندما يصطدم بشخص مصاب. بعد فترة من العدوى ، يموت الشخص
+  أو يصبح منيع بشكل دائم.
+  </font>
+  </p>
+
+<p dir="rtl" align="right">
+	<font face='Tahoma, Arial,"Times New Roman"' size='+1'> 
+  حرّك أشرطة التمرير إلى اليسار واليمين لتغيير المعلمات ومراقبة ما يحدث. يتوفر شرح مفصل أدناه.
+  </font>
+  </p>
+  
+  <table class='parameters'>
+  <tr>
+  <td><font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  تباعد اجتماعي
+  </font>
+  </td>
+  <td><input id="social-distance-slider" class="slider" type="range" min="0" max="100" value="10"
+     oninput="document.getElementById('social-distance-value').innerHTML=this.value;"
+     onchange="document.getElementById('social-distance-value').innerHTML=this.value;"/></td>
+  <td><span id="social-distance-value">10</span>%</td>
+  <td class="restart-button" rowspan="3"><input id='restart-button' type='submit' value='Restart'/></td>
+  </tr>
+  <tr>
+  <td>
+  <font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  معدل الوفيات
+  </font>
+  </td>
+  <td><input id="mortality-slider" class="slider" type="range" min="0" max="100" value="3"
+       oninput="document.getElementById('mortality-value').innerHTML=this.value;"
+       onchange="document.getElementById('mortality-value').innerHTML=this.value;"/></td>
+  <td><span id="mortality-value">3</span>%</td>
+  </tr>
+  <tr>
+  <td>
+  <font face='Tahoma, Arial,"Times New Roman"' size='+.7'>
+  مدة العدوى
+  </font>
+  </td>
+  <td><input id="sick-time-slider" class="slider" type="range" min="0" max="10" step="0.1" value="2"
+     oninput="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"
+     onchange="document.getElementById('sick-time-value').innerHTML=Number(this.value).toFixed(1);"/></td>
+  <td><span id="sick-time-value">2.0</span>s</td>
+  </tr>
+  </table>
+
+  <div id="ball-simulation"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px;">○</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	صحي
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	منيع
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	مريض
+	</font>
+	</td>
+    <td><span style="font-size: 32px; color: #808080">●</span>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	متوفی
+	</font>
+	</td>
+    <td>
+	<font face='Tahoma, Arial,"Times New Roman"' size='+.5'>
+	المدة
+	</font>
+	</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat"></span>%</td>
+    <td><span id="immune-stat"></span>%</td>
+    <td><span id="sick-stat"></span>%</td>
+    <td><span id="dead-stat"></span>%</td>
+    <td><span id="current-time"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph"></div>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>التباعد الاجتماعي:</b> 
+  تحكم في مدى فرض السكان على التباعد الاجتماعي. عند 0 ٪ لا يوجد إبعاد اجتماعي ويتحرك الأشخاص بأقصى سرعة ،
+  بحيث يكون هناك قدر كبير من الاتصال بينهم. في
+     100٪ لا يزال الجميع ساكنين ولا يوجد اتصال على الإطلاق.
+  </font>
+  </p>
+
+<p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>معدل الوفيات</b> 
+  هو احتمال وفاة شخص مريض. إذا قمت بتعيين الوفيات
+  إلى 0٪ لا أحد يموت ، في حين أن معدل الوفيات 100٪ يعني أن أي شخص يمسك بالعدوى سيموت.  </font>
+  </p>
+
+     <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>مدة العدوى:</b> 
+ تحدد مدة إصابة الشخص.
+     يمنح الشخص المصاب وقتًا أطول فرصًا أكبر لنشر العدوى.
+     نظرًا لأن المحاكاة تعمل بسرعة عالية ، يتم قياس الوقت بالثواني.	</font>
+	</p>
+
+ <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+ تقوم المحاكاة عمداً بعدد من الافتراضات المبسطة ، من بينها: لا توجد فترة حضانة ؛ الأشخاص معديون طوال مدة مرضهم واحتمال انتقال العدوى عن طريق الاتصال هو 100 ٪.  </font>
+  </p>
+  
+  <p>
+    The author of the simulation is <a href="http://www.andrej.com/">Andrej
+    Bauer</a>.
+    The idea for it came from an
+    <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">article</a>
+    in the Washington post written by Harry Stevens.
+    The source code is freely available as a GitHub project <a href="https://github.com/andrejbauer/social-distancing-simulator"><code>social-distancing-simulator</code></a>.
+    Please help improve the code and translate it into your language.
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  تفقد هذه الصفحة في
+  <a href="./index.html"> لغات أخرى
+  </a>
+  </font>
+  </p>
+
+  <p dir="rtl" align="right">
+  <font face='Tahoma, Arial,"Times New Roman"' size='+1'>
+  <b>تنازل عن مسئولية:</b> 
+ الغرض من المحاكي تعليمي بحت. يوضح مدى تعقيد التباعد الاجتماعي أثناء الوباء من حيث النموذج الرياضي الاصطناعي. لا ينبغي استخدامه لاستخلاص أي استنتاجات حول الأمراض المعدية الحقيقية.  </font>
+  </p>
+
+  </div>
+</body>
+</html>
